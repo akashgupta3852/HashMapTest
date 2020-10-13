@@ -14,10 +14,10 @@ public class MyLinkedHashMap<K, V> {
 			this.myBucketArray.add(null);
 	}
 
+	// This implements hash function to find index for a key
 	private int getBucketsIndex(K key) {
 		int hashCode = Math.abs(key.hashCode());
 		int index = hashCode % numBuckets;
-		System.out.println("Key: " + key + " is stored at the index: " + index);
 		return index;
 	}
 
@@ -46,6 +46,17 @@ public class MyLinkedHashMap<K, V> {
 		} else {
 			myMapNode.setValue(value);
 		}
+	}
+
+	public V remove(K key) {
+		int index = this.getBucketsIndex(key);
+		MyLinkedList<K> myLinkedList = this.myBucketArray.get(index);
+		MyMapNode<K, V> myMapNode = (MyMapNode<K, V>) myLinkedList.search(key);
+		if (myMapNode != null) {
+			myLinkedList.delete(myMapNode.getKey());
+			return myMapNode.getValue();
+		}
+		return null;
 	}
 
 	@Override
